@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELBET - Konfigurator Płyt Kanałowych Pro</title>
+    <style>
+        :root {
+            --primary: #ff5f2e;
+            --bg: #050505;
+            --panel-bg: rgba(18, 18, 18, 0.95);
+            --font: 'Segoe UI', Roboto, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font); }
+        body { background: var(--bg); color: white; overflow: hidden; height: 100vh; }
+
+        .ui-container-left {
+            position: absolute; top: 25px; left: 25px; 
+            display: flex; flex-direction: column; 
+            gap: 10px; 
+            z-index: 100; width: 360px;
+        }
+
+        .side-panel, .info-panel {
+            background: var(--panel-bg); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px; padding: 25px;
+            opacity: 0; transform: translateX(-30px); transition: 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+            backdrop-filter: blur(15px);
+        }
+
+        .side-panel.visible, .info-panel.visible { opacity: 1; transform: translateX(0); }
+
+        h1 { font-size: 13px; color: var(--primary); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; font-weight: 900; }
+        .label { font-size: 10px; color: #888; text-transform: uppercase; margin-bottom: 10px; display: block; font-weight: 700; }
+        
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+        .variant-btn {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
+            color: #ccc; padding: 12px; border-radius: 10px; cursor: pointer; transition: 0.3s; font-size: 11px; font-weight: 600;
+        }
+        .variant-btn.active { border-color: var(--primary); color: white; background: rgba(255, 95, 46, 0.15); }
+
+        .info-panel { display: flex; flex-direction: column; position: relative; max-height: 500px; }
+        
+        .info-content { 
+            font-size: 11px; line-height: 1.6; color: #aaa; 
+            overflow-y: scroll;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            scroll-behavior: smooth;
+        }
+        .info-content::-webkit-scrollbar { display: none; }
+
+        .info-item { margin-bottom: 15px; padding-left: 12px; position: relative; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; }
+        .info-item::before { content: '•'; position: absolute; left: 0; color: var(--primary); font-weight: bold; }
+        .info-tag { color: #eee; font-weight: 600; display: block; margin-bottom: 2px; text-transform: uppercase; font-size: 9px; }
+
+        .scroll-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .scroll-arrow {
+            color: var(--primary);
+            font-size: 18px;
+            font-weight: bold;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+            transition: 0.3s;
+        }
+        .scroll-arrow:hover { color: white; transform: scale(1.2); }
+        
+        .arrow-up { transform: rotate(-90deg); }
+        .arrow-down { transform: rotate(90deg); }
+
+        .control-section { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; margin-top: 15px; }
+        .ui-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .modern-slider { width: 100%; height: 4px; background: #333; border-radius: 10px; -webkit-appearance: none; outline: none; margin: 10px 0; }
+        .modern-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: var(--primary); border-radius: 50%; cursor: pointer; border: 2px solid #fff; }
+
+        .switch { position: relative; width: 44px; height: 22px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider-round { position: absolute; cursor: pointer; inset: 0; background-color: #333; transition: .4s; border-radius: 34px; }
+        .slider-round:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider-round { background-color: var(--primary); }
+        input:checked + .slider-round:before { transform: translateX(22px); }
+
+        .ar-container { position: absolute; bottom: 45px; left: 50%; transform: translateX(-50%); z-index: 100; opacity: 0; transition: 1.5s; }
+        .ar-container.visible { opacity: 1; }
+        .btn-ar { background: linear-gradient(135deg, #ff7e54, #ff5f2e); color: white; border: none; padding: 20px 50px; border-radius: 50px; font-weight: 800; font-size: 14px; cursor: pointer; box-shadow: 0 10px 30px rgba(255, 95, 46, 0.4); }
+        
+        .nav-guide {
+            position: absolute; bottom: 35px; right: 35px;
+            background: rgba(0, 0, 0, 0.7); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px; padding: 20px 30px; z-index: 100;
+            display: flex; gap: 30px; opacity: 0; transition: 1.5s; backdrop-filter: blur(10px);
+        }
+        .nav-guide.visible { opacity: 1; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .mouse-icon { width: 24px; height: 38px; border: 2px solid #555; border-radius: 12px; position: relative; }
+        .mouse-icon::before { content: ''; position: absolute; top: 6px; left: 50%; transform: translateX(-50%); width: 4px; height: 8px; background: #555; border-radius: 2px; }
+        .mouse-left::after { content: ''; position: absolute; top: 0; left: 0; width: 50%; height: 40%; background: var(--primary); border-top-left-radius: 10px; }
+        .mouse-right::after { content: ''; position: absolute; top: 0; right: 0; width: 50%; height: 40%; background: var(--primary); border-top-right-radius: 10px; }
+        .mouse-scroll::before { background: var(--primary); top: 8px; z-index: 2; }
+        .nav-text { font-size: 10px; color: #888; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; }
+
+        #start-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div id="start-overlay" onclick="startExperience()">
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#ff5f2e" stroke-width="0.3"><path d="M5 3l14 9-14 9V3z"/></svg>
+        <p style="color: var(--primary); font-size: 12px; letter-spacing: 6px; margin-top: 30px; font-weight: 300;">URUCHOM PREZENTACJĘ PRODUKTU</p>
+    </div>
+
+    <div class="ui-container-left">
+        <div class="side-panel" id="ui-panel">
+            <h1>Specyfikacja Techniczna</h1>
+            <span class="label">Wysokość profilu (H)</span>
+            <div class="btn-grid">
+                <button class="variant-btn active" onclick="setVariant(24, this)">H-240 mm</button>
+                <button class="variant-btn" onclick="setVariant(32, this)">H-320 mm</button>
+                <button class="variant-btn" onclick="setVariant(40, this)">H-400 mm</button>
+                <button class="variant-btn" onclick="setVariant(50, this)">H-500 mm</button>
+            </div>
+            <div class="control-section">
+                <div class="ui-row">
+                    <span class="label" style="margin:0">Tryb X-Ray (Prześwietlenie)</span>
+                    <label class="switch">
+                        <input type="checkbox" id="xrayToggle" onchange="toggleXRay(this.checked)">
+                        <span class="slider-round"></span>
+                    </label>
+                </div>
+                <span class="label">Przekrój płyty</span>
+                <input type="range" id="clipSlider" class="modern-slider" min="-8" max="8" step="0.1" value="8" oninput="updateClipping(this.value)">
+            </div>
+        </div>
+
+        <div class="info-panel" id="info-panel">
+            <h1>Kompendium Wiedzy o Produkcie</h1>
+            <div class="info-content" id="scrollContainer">
+                <div class="info-item"><span class="info-tag">Charakterystyka ogólna:</span> Sprężone płyty kanałowe ELBET to nowoczesne elementy stropowe przeznaczone do konstrukcji o dużych rozpiętościach. Eliminują one konieczność stosowania podpór montażowych, co drastycznie przyspiesza proces inwestycyjny.</div>
+                
+                <div class="info-item"><span class="info-tag">Parametry betonu:</span> Stosujemy wyłącznie mieszanki klasy C40/50 (B-50) o wysokim stopniu zagęszczenia. Dzięki niskiej nasiąkliwości beton ten jest wysoce odporny na warunki atmosferyczne i korozję karbonatyzacyjną.</div>
+                
+                <div class="info-item"><span class="info-tag">Zbrojenie sprężające:</span> Wykorzystujemy atestowane sploty stalowe o wysokiej granicy plastyczności (Y1860S7). Proces naciągu strun odbywa się przed betonowaniem, co po zwolnieniu naciągu wprowadza siły ściskające, nadając płycie unikalną nośność.</div>
+                
+                <div class="info-item"><span class="info-tag">Izolacyjność akustyczna:</span> Dzięki podłużnym kanałom powietrznym, płyty posiadają doskonałe właściwości tłumienia dźwięków powietrznych (Rw do 58 dB), co czyni je idealnym rozwiązaniem dla budownictwa wielorodzinnego i biurowego.</div>
+                
+                <div class="info-item"><span class="info-tag">Odporność ogniowa:</span> Standardowo oferujemy klasę REI 60, jednak dzięki zwiększeniu otuliny zbrojenia i zastosowaniu specjalnych domieszek, produkujemy płyty o wytrzymałości REI 120, a nawet REI 240.</div>
+                
+                <div class="info-item"><span class="info-tag">Ekonomia budowy:</span> Zastosowanie płyt kanałowych redukuje zużycie betonu konstrukcyjnego na budowie o ok. 40% w porównaniu do stropów monolitycznych oraz skraca czas montażu stropu do kilku godzin.</div>
+                
+                <div class="info-item"><span class="info-tag">Logistyka i Montaż:</span> Płyty dostarczane są transportem kołowym bezpośrednio pod żuraw. Montaż odbywa się metodą "z samochodu", co eliminuje potrzebę składowania materiałów na placu budowy.</div>
+                
+                <div class="info-item"><span class="info-tag">Zastosowanie przemysłowe:</span> Nasze produkty doskonale sprawdzają się w halach magazynowych, centrach logistycznych oraz parkingach wielopoziomowych, gdzie wymagane są obciążenia użytkowe przekraczające 15 kN/m2.</div>
+
+                <div class="info-item"><span class="info-tag">Precyzja wymiarowa:</span> Zautomatyzowane linie produkcyjne gwarantują tolerancję długości w granicach +/- 10mm oraz stałą szerokość modularną 1200mm, co ułatwia projektowanie i późniejsze wykończenie sufitów.</div>
+                
+                <div class="info-item"><span class="info-tag">Środowisko i Ekologia:</span> Produkcja prefabrykatów generuje o 30% mniej odpadów niż tradycyjne metody budowlane. Wszystkie surowce pochodzą z lokalnych kopalni, co redukuje ślad węglowy transportu.</div>
+            </div>
+            <div class="scroll-controls">
+                <div class="scroll-arrow arrow-up" id="arrowUp" onclick="scrollText(-100)">></div>
+                <div class="scroll-arrow arrow-down" id="arrowDown" onclick="scrollText(100)">></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ar-container" id="ui-ar">
+        <button class="btn-ar" onclick="restartExperience()">URUCHOM PREZENTACJĘ OD POCZĄTKU</button>
+    </div>
+
+    <div class="nav-guide" id="ui-nav">
+        <div class="nav-item"><div class="mouse-icon mouse-left"></div><div class="nav-text">OBRÓT</div></div>
+        <div class="nav-item"><div class="mouse-icon mouse-right"></div><div class="nav-text">RUCH</div></div>
+        <div class="nav-item"><div class="mouse-icon mouse-scroll"></div><div class="nav-text">ZOOM</div></div>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"></script>
+
+    <script>
+        let scene, camera, renderer, controls, currentModel, grid;
+        let isAnimating = true;
+        let clipPlane = new THREE.Plane(new THREE.Vector3(0, 0, -1), 8);
+
+        function scrollText(amount) {
+            const container = document.getElementById('scrollContainer');
+            container.scrollBy({ top: amount, behavior: 'smooth' });
+        }
+
+        function startExperience() {
+            document.getElementById('start-overlay').style.display = 'none';
+            init();
+        }
+
+        function init() {
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x020202);
+            camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(35, 30, 50); 
+
+            renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas'), antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            
+            renderer.physicallyCorrectLights = true;
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.5;
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            renderer.localClippingEnabled = true;
+
+            grid = new THREE.GridHelper(50, 50, 0x333333, 0x111111);
+            grid.position.y = -0.01;
+            grid.material.opacity = 0;
+            grid.material.transparent = true;
+            scene.add(grid);
+
+            const pmremGenerator = new THREE.PMREMGenerator(renderer);
+            pmremGenerator.compileEquirectangularShader();
+            
+            const envScene = new THREE.Scene();
+            const studioLight = new THREE.RectAreaLight(0xffffff, 5, 10, 10);
+            studioLight.position.set(5, 10, 5);
+            studioLight.lookAt(0, 0, 0);
+            envScene.add(studioLight);
+            scene.environment = pmremGenerator.fromScene(envScene).texture;
+
+            const mainLight = new THREE.DirectionalLight(0xffffff, 4.0);
+            mainLight.position.set(10, 20, 10);
+            mainLight.castShadow = true;
+            mainLight.shadow.mapSize.width = 2048;
+            mainLight.shadow.mapSize.height = 2048;
+            scene.add(mainLight);
+
+            const fillLight = new THREE.PointLight(0xff5f2e, 2.0);
+            fillLight.position.set(-10, 5, -10);
+            scene.add(fillLight);
+
+            const ambient = new THREE.AmbientLight(0xffffff, 0.3);
+            scene.add(ambient);
+
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+
+            loadModel();
+            animate();
+        }
+
+        function loadModel() {
+            new THREE.GLTFLoader().load('produkt.glb', (gltf) => {
+                currentModel = gltf.scene;
+                currentModel.traverse(n => {
+                    if (n.isMesh) {
+                        n.castShadow = true;
+                        n.receiveShadow = true;
+                        
+                        n.material = new THREE.MeshStandardMaterial({
+                            color: n.material.color,
+                            map: n.material.map,
+                            roughness: n.name.toLowerCase().includes("beton") ? 0.8 : 0.4,
+                            metalness: n.name.toLowerCase().includes("beton") ? 0.0 : 0.6,
+                            envMapIntensity: 1.2,
+                            transparent: true, 
+                            opacity: 0,
+                            clippingPlanes: [clipPlane]
+                        });
+                        
+                        n.userData.originalColor = n.material.color.clone();
+                        n.userData.origPos = n.position.clone();
+                        n.position.y = 30; 
+                    }
+                });
+                scene.add(currentModel);
+                runIntro();
+            });
+        }
+
+        function toggleXRay(active) {
+            currentModel.traverse(n => {
+                if (n.isMesh) {
+                    const isConcrete = n.name.toLowerCase().includes("beton") || n.scale.x > 0.5;
+                    if (isConcrete) {
+                        const targetColor = active ? new THREE.Color(0x00ffff) : n.userData.originalColor;
+                        new TWEEN.Tween(n.material.color).to({ r: targetColor.r, g: targetColor.g, b: targetColor.b }, 600).start();
+                        new TWEEN.Tween(n.material).to({ opacity: active ? 0.2 : 1.0 }, 600).start();
+                        n.castShadow = !active;
+                    }
+                }
+            });
+        }
+
+        function updateClipping(val) { clipPlane.constant = parseFloat(val); }
+
+        function runIntro() {
+            currentModel.traverse(n => {
+                if(n.isMesh) {
+                    new TWEEN.Tween(n.position).to({y: n.userData.origPos.y}, 2500).easing(TWEEN.Easing.Cubic.Out).start();
+                    new TWEEN.Tween(n.material).to({opacity: 1}, 1500).start();
+                }
+            });
+            
+            new TWEEN.Tween(grid.material).to({opacity: 0.3}, 2000).start();
+            new TWEEN.Tween(camera.position).to({x: 15, y: 12, z: 22}, 3500).easing(TWEEN.Easing.Cubic.InOut).start();
+            
+            setTimeout(() => {
+                isAnimating = false;
+                controls.autoRotate = true;
+                ["ui-panel", "info-panel", "ui-nav", "ui-ar"].forEach(id => document.getElementById(id).classList.add('visible'));
+            }, 3800);
+        }
+
+        function restartExperience() { location.reload(); }
+
+        function setVariant(h, btn) {
+            if(isAnimating) return;
+            new TWEEN.Tween(currentModel.scale).to({y: h/24}, 800).easing(TWEEN.Easing.Back.Out).start();
+            document.querySelectorAll('.variant-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            TWEEN.update();
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
