@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ELBET - Konfigurator Płyt Kanałowych Pro</title>
+    <title>ELBET - Strop Filigran</title>
     <style>
         :root {
             --primary: #ff5f2e;
@@ -66,25 +66,16 @@
         }
 
         .scroll-arrow {
-            color: var(--primary);
-            font-size: 18px;
-            font-weight: bold;
-            width: 30px;
-            height: 30px;
-            line-height: 30px;
-            text-align: center;
-            cursor: pointer;
-            user-select: none;
-            transition: 0.3s;
+            color: var(--primary); font-size: 18px; font-weight: bold; width: 30px; height: 30px; line-height: 30px; text-align: center; cursor: pointer; user-select: none; transition: 0.3s;
         }
         .scroll-arrow:hover { color: white; transform: scale(1.2); }
-        
         .arrow-up { transform: rotate(-90deg); }
         .arrow-down { transform: rotate(90deg); }
 
         .control-section { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; margin-top: 15px; }
         .ui-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .modern-slider { width: 100%; height: 4px; background: #333; border-radius: 10px; -webkit-appearance: none; outline: none; margin: 10px 0; }
+        
+        .modern-slider { width: 100%; height: 4px; background: #333; border-radius: 10px; -webkit-appearance: none; appearance: none; outline: none; margin: 10px 0; }
         .modern-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: var(--primary); border-radius: 50%; cursor: pointer; border: 2px solid #fff; }
 
         .switch { position: relative; width: 44px; height: 22px; }
@@ -113,7 +104,7 @@
         .mouse-scroll::before { background: var(--primary); top: 8px; z-index: 2; }
         .nav-text { font-size: 10px; color: #888; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; }
 
-        #start-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; }
+        #start-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: opacity 0.5s; }
     </style>
 </head>
 <body>
@@ -126,48 +117,44 @@
     <div class="ui-container-left">
         <div class="side-panel" id="ui-panel">
             <h1>Specyfikacja Techniczna</h1>
-            <span class="label">Wysokość profilu (H)</span>
+            <span class="label">Całkowita Grubość Stropu (H)</span>
             <div class="btn-grid">
-                <button class="variant-btn active" onclick="setVariant(24, this)">H-240 mm</button>
-                <button class="variant-btn" onclick="setVariant(32, this)">H-320 mm</button>
-                <button class="variant-btn" onclick="setVariant(40, this)">H-400 mm</button>
-                <button class="variant-btn" onclick="setVariant(50, this)">H-500 mm</button>
+                <button class="variant-btn active" onclick="setVariant(16, this)">160 mm</button>
+                <button class="variant-btn" onclick="setVariant(18, this)">180 mm</button>
+                <button class="variant-btn" onclick="setVariant(20, this)">200 mm</button>
+                <button class="variant-btn" onclick="setVariant(22, this)">220 mm</button>
             </div>
             <div class="control-section">
                 <div class="ui-row">
-                    <span class="label" style="margin:0">Tryb X-Ray (Prześwietlenie)</span>
+                    <span class="label" style="margin:0">Tryb X-Ray (Zbrojenie)</span>
                     <label class="switch">
                         <input type="checkbox" id="xrayToggle" onchange="toggleXRay(this.checked)">
                         <span class="slider-round"></span>
                     </label>
                 </div>
-                <span class="label">Przekrój płyty</span>
+                <span class="label">Przekrój konstrukcyjny</span>
                 <input type="range" id="clipSlider" class="modern-slider" min="-8" max="8" step="0.1" value="8" oninput="updateClipping(this.value)">
             </div>
         </div>
 
         <div class="info-panel" id="info-panel">
-            <h1>Kompendium Wiedzy o Produkcie</h1>
+            <h1>Kompendium: Strop Filigran</h1>
             <div class="info-content" id="scrollContainer">
-                <div class="info-item"><span class="info-tag">Charakterystyka ogólna:</span> Sprężone płyty kanałowe ELBET to nowoczesne elementy stropowe przeznaczone do konstrukcji o dużych rozpiętościach. Eliminują one konieczność stosowania podpór montażowych, co drastycznie przyspiesza proces inwestycyjny.</div>
+                <div class="info-item"><span class="info-tag">Definicja Systemu:</span> Strop typu Filigran to system zespolony, składający się z prefabrykowanej płyty żelbetowej o grubości 5-7 cm oraz warstwy betonu wylewanego na budowie (nadbetonu).</div>
                 
-                <div class="info-item"><span class="info-tag">Parametry betonu:</span> Stosujemy wyłącznie mieszanki klasy C40/50 (B-50) o wysokim stopniu zagęszczenia. Dzięki niskiej nasiąkliwości beton ten jest wysoce odporny na warunki atmosferyczne i korozję karbonatyzacyjną.</div>
+                <div class="info-item"><span class="info-tag">Zbrojenie Kratowe:</span> Charakterystycznym elementem są przestrzenne kratownice stalowe, które wystają z płyty prefabrykowanej. Zapewniają one sztywność montażową oraz doskonałe zespolenie z nadbetonem.</div>
                 
-                <div class="info-item"><span class="info-tag">Zbrojenie sprężające:</span> Wykorzystujemy atestowane sploty stalowe o wysokiej granicy plastyczności (Y1860S7). Proces naciągu strun odbywa się przed betonowaniem, co po zwolnieniu naciągu wprowadza siły ściskające, nadając płycie unikalną nośność.</div>
+                <div class="info-item"><span class="info-tag">Eliminacja Deskowań:</span> Płyta Filigran pełni funkcję szalunku traconego. Znacznie ogranicza to ilość drewna szalunkowego i stemplowania, co przyspiesza prace o ok. 50%.</div>
                 
-                <div class="info-item"><span class="info-tag">Izolacyjność akustyczna:</span> Dzięki podłużnym kanałom powietrznym, płyty posiadają doskonałe właściwości tłumienia dźwięków powietrznych (Rw do 58 dB), co czyni je idealnym rozwiązaniem dla budownictwa wielorodzinnego i biurowego.</div>
+                <div class="info-item"><span class="info-tag">Gładka Powierzchnia:</span> Spodnia strona płyty jest gładka i nie wymaga tynkowania – wystarczy szpachlowanie połączeń, co redukuje koszty wykończenia wnętrz.</div>
                 
-                <div class="info-item"><span class="info-tag">Odporność ogniowa:</span> Standardowo oferujemy klasę REI 60, jednak dzięki zwiększeniu otuliny zbrojenia i zastosowaniu specjalnych domieszek, produkujemy płyty o wytrzymałości REI 120, a nawet REI 240.</div>
+                <div class="info-item"><span class="info-tag">Elastyczność Projektowa:</span> System pozwala na dowolne kształtowanie rzutu stropu (wycięcia, skosy, otwory instalacyjne), które są przygotowywane już na etapie produkcji prefabrykatu.</div>
                 
-                <div class="info-item"><span class="info-tag">Ekonomia budowy:</span> Zastosowanie płyt kanałowych redukuje zużycie betonu konstrukcyjnego na budowie o ok. 40% w porównaniu do stropów monolitycznych oraz skraca czas montażu stropu do kilku godzin.</div>
+                <div class="info-item"><span class="info-tag">Nośność i Rozpiętość:</span> Stropy Filigran pozwalają na uzyskanie dużych rozpiętości (nawet do 10-12 metrów) przy zachowaniu stosunkowo małej grubości konstrukcji.</div>
                 
-                <div class="info-item"><span class="info-tag">Logistyka i Montaż:</span> Płyty dostarczane są transportem kołowym bezpośrednio pod żuraw. Montaż odbywa się metodą "z samochodu", co eliminuje potrzebę składowania materiałów na placu budowy.</div>
+                <div class="info-item"><span class="info-tag">Akustyka:</span> Dzięki monolitycznemu połączeniu nadbetonu z prefabrykatem, strop charakteryzuje się bardzo dobrą izolacyjnością akustyczną, spełniającą rygorystyczne normy budowlane.</div>
                 
-                <div class="info-item"><span class="info-tag">Zastosowanie przemysłowe:</span> Nasze produkty doskonale sprawdzają się w halach magazynowych, centrach logistycznych oraz parkingach wielopoziomowych, gdzie wymagane są obciążenia użytkowe przekraczające 15 kN/m2.</div>
-
-                <div class="info-item"><span class="info-tag">Precyzja wymiarowa:</span> Zautomatyzowane linie produkcyjne gwarantują tolerancję długości w granicach +/- 10mm oraz stałą szerokość modularną 1200mm, co ułatwia projektowanie i późniejsze wykończenie sufitów.</div>
-                
-                <div class="info-item"><span class="info-tag">Środowisko i Ekologia:</span> Produkcja prefabrykatów generuje o 30% mniej odpadów niż tradycyjne metody budowlane. Wszystkie surowce pochodzą z lokalnych kopalni, co redukuje ślad węglowy transportu.</div>
+                <div class="info-item"><span class="info-tag">Logistyka:</span> Płyty o szerokości do 2.4m transportowane są bezpośrednio na budowę, gdzie za pomocą dźwigu trafiają od razu na docelowe miejsce w konstrukcji.</div>
             </div>
             <div class="scroll-controls">
                 <div class="scroll-arrow arrow-up" id="arrowUp" onclick="scrollText(-100)">></div>
@@ -195,7 +182,10 @@
 
     <script>
         let scene, camera, renderer, controls, currentModel, grid;
+        let mainLight, hemiLight;
+        
         let isAnimating = true;
+        let isModelLoaded = false;
         let clipPlane = new THREE.Plane(new THREE.Vector3(0, 0, -1), 8);
 
         function scrollText(amount) {
@@ -204,26 +194,33 @@
         }
 
         function startExperience() {
-            document.getElementById('start-overlay').style.display = 'none';
-            init();
+            const overlay = document.getElementById('start-overlay');
+            overlay.style.opacity = '0';
+            setTimeout(() => { overlay.style.display = 'none'; }, 500);
+
+            if (isModelLoaded) {
+                runIntroSequence();
+            }
         }
 
         function init() {
             scene = new THREE.Scene();
             scene.background = new THREE.Color(0x020202);
             camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.set(35, 30, 50); 
+            
+            // Kamera ustawiona blisko, aby model był od razu duży
+            camera.position.set(25, 25, 30); 
 
             renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas'), antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             
-            renderer.physicallyCorrectLights = true;
             renderer.outputEncoding = THREE.sRGBEncoding;
             renderer.toneMapping = THREE.ACESFilmicToneMapping;
-            renderer.toneMappingExposure = 1.5;
+            renderer.toneMappingExposure = 1.1; 
+            
             renderer.shadowMap.enabled = true;
-            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap; 
             renderer.localClippingEnabled = true;
 
             grid = new THREE.GridHelper(50, 50, 0x333333, 0x111111);
@@ -232,33 +229,32 @@
             grid.material.transparent = true;
             scene.add(grid);
 
-            const pmremGenerator = new THREE.PMREMGenerator(renderer);
-            pmremGenerator.compileEquirectangularShader();
-            
-            const envScene = new THREE.Scene();
-            const studioLight = new THREE.RectAreaLight(0xffffff, 5, 10, 10);
-            studioLight.position.set(5, 10, 5);
-            studioLight.lookAt(0, 0, 0);
-            envScene.add(studioLight);
-            scene.environment = pmremGenerator.fromScene(envScene).texture;
+            // --- OŚWIETLENIE ---
+            hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.6); 
+            scene.add(hemiLight);
 
-            const mainLight = new THREE.DirectionalLight(0xffffff, 4.0);
-            mainLight.position.set(10, 20, 10);
+            mainLight = new THREE.DirectionalLight(0xffffff, 2.8);
+            mainLight.position.set(20, 30, 20);
             mainLight.castShadow = true;
-            mainLight.shadow.mapSize.width = 2048;
-            mainLight.shadow.mapSize.height = 2048;
+            mainLight.shadow.mapSize.width = 4096;
+            mainLight.shadow.mapSize.height = 4096;
+            mainLight.shadow.camera.near = 0.5;
+            mainLight.shadow.camera.far = 100;
+            const d = 25;
+            mainLight.shadow.camera.left = -d;
+            mainLight.shadow.camera.right = d;
+            mainLight.shadow.camera.top = d;
+            mainLight.shadow.camera.bottom = -d;
+            mainLight.shadow.bias = -0.0001; 
+            mainLight.shadow.normalBias = 0.02; 
             scene.add(mainLight);
 
-            const fillLight = new THREE.PointLight(0xff5f2e, 2.0);
+            const fillLight = new THREE.PointLight(0xff5f2e, 1.5);
             fillLight.position.set(-10, 5, -10);
             scene.add(fillLight);
 
-            const ambient = new THREE.AmbientLight(0xffffff, 0.3);
-            scene.add(ambient);
-
             controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
-            controls.dampingFactor = 0.05;
 
             loadModel();
             animate();
@@ -267,71 +263,201 @@
         function loadModel() {
             new THREE.GLTFLoader().load('produkt.glb', (gltf) => {
                 currentModel = gltf.scene;
+                
+                let concreteMeshes = [];
+                let steelMeshes = [];
+                let allMeshes = [];
+                
+                // 1. Zbieranie wszystkich meshów
                 currentModel.traverse(n => {
                     if (n.isMesh) {
                         n.castShadow = true;
                         n.receiveShadow = true;
+                        if(n.geometry) n.geometry.computeVertexNormals();
+
+                        const name = n.name.toLowerCase();
+                        const matName = n.material ? n.material.name.toLowerCase() : "";
+                        const isSteel = name.includes('stal') || name.includes('steel') || 
+                                      name.includes('zbroj') || name.includes('rebar') || 
+                                      name.includes('pret') || name.includes('pręt') ||
+                                      name.includes('krat') || matName.includes('metal');
+                        const isConcrete = !isSteel;
                         
                         n.material = new THREE.MeshStandardMaterial({
-                            color: n.material.color,
+                            color: n.material.color.clone(),
                             map: n.material.map,
-                            roughness: n.name.toLowerCase().includes("beton") ? 0.8 : 0.4,
-                            metalness: n.name.toLowerCase().includes("beton") ? 0.0 : 0.6,
-                            envMapIntensity: 1.2,
-                            transparent: true, 
-                            opacity: 0,
-                            clippingPlanes: [clipPlane]
+                            roughness: isConcrete ? 0.7 : 0.3,
+                            metalness: isConcrete ? 0.0 : 0.8,
+                            transparent: true,
+                            opacity: 0, 
+                            clippingPlanes: [clipPlane],
+                            side: THREE.DoubleSide
                         });
                         
-                        n.userData.originalColor = n.material.color.clone();
+                        n.userData.isConcrete = isConcrete;
                         n.userData.origPos = n.position.clone();
-                        n.position.y = 30; 
+                        n.userData.origScale = n.scale.clone();
+                        
+                        if(!n.geometry.boundingBox) n.geometry.computeBoundingBox();
+                        const center = (n.geometry.boundingBox.max.y + n.geometry.boundingBox.min.y) / 2;
+                        n.userData.worldY = center + n.userData.origPos.y; 
+
+                        if(isSteel) steelMeshes.push(n);
+                        else concreteMeshes.push(n);
+                        
+                        allMeshes.push(n);
                     }
                 });
+
+                // 2. Określanie co jest GÓRĄ (Nadbeton + Stal górna)
+                if (allMeshes.length > 0) {
+                    let minC = Infinity, maxC = -Infinity;
+                    concreteMeshes.forEach(m => {
+                        if (m.userData.worldY < minC) minC = m.userData.worldY;
+                        if (m.userData.worldY > maxC) maxC = m.userData.worldY;
+                    });
+                    
+                    const threshold = minC + (maxC - minC) * 0.4;
+
+                    allMeshes.forEach(m => {
+                        if (m.userData.worldY > threshold) {
+                            m.userData.isTopLayer = true; 
+                        } else {
+                            m.userData.isTopLayer = false;
+                        }
+                    });
+                }
+
+                // 3. Ustawianie pozycji startowych do animacji
+                allMeshes.forEach(m => {
+                    if (m.userData.isTopLayer) {
+                        // GÓRA: Startuje wysoko (spada)
+                        m.position.y += 15; 
+                    } else {
+                        // DÓŁ: Beton nisko, stal w miejscu
+                        if(m.userData.isConcrete) {
+                            m.position.y -= 5;
+                        }
+                    }
+                });
+                
+                steelMeshes.sort((a, b) => a.userData.origPos.x - b.userData.origPos.x);
+
+                currentModel.userData.steelMeshes = steelMeshes;
+                currentModel.userData.concreteMeshes = concreteMeshes;
+
+                currentModel.scale.set(2, 1.6, 2);
+
                 scene.add(currentModel);
-                runIntro();
+                isModelLoaded = true;
+                
+                const overlay = document.getElementById('start-overlay');
+                if(overlay.style.display === 'none') {
+                    runIntroSequence();
+                }
             });
         }
 
+        function runIntroSequence() {
+            if(!currentModel) return;
+            
+            const steel = currentModel.userData.steelMeshes;
+            const concrete = currentModel.userData.concreteMeshes;
+            const all = [...steel, ...concrete];
+
+            // 1. DOLNE ZBROJENIE (Fade In)
+            steel.forEach(mesh => {
+                if(!mesh.userData.isTopLayer) {
+                    new TWEEN.Tween(mesh.material)
+                        .to({opacity: 1}, 800) 
+                        .easing(TWEEN.Easing.Quadratic.Out)
+                        .start();
+                }
+            });
+
+            // 2. DOLNY BETON (PŁYTA) - Wjazd z dołu
+            const concreteDelay = 800;
+            concrete.forEach(mesh => {
+                if(!mesh.userData.isTopLayer) {
+                    new TWEEN.Tween(mesh.position)
+                        .to({y: mesh.userData.origPos.y}, 1000)
+                        .delay(concreteDelay)
+                        .easing(TWEEN.Easing.Cubic.Out)
+                        .start();
+
+                    new TWEEN.Tween(mesh.material)
+                        .to({opacity: 1}, 1000)
+                        .delay(concreteDelay)
+                        .start();
+                }
+            });
+
+            // 3. GÓRA (NADBETON + JEGO ZBROJENIE) - Spadają z góry
+            // Zmieniono czas trwania na 2500ms (2.5s) aby zwolnić upadek
+            const topDelay = 1800;
+            all.forEach(mesh => {
+                if(mesh.userData.isTopLayer) {
+                    new TWEEN.Tween(mesh.position)
+                        .to({y: mesh.userData.origPos.y}, 2500) // Wydłużony czas (zwolnienie)
+                        .delay(topDelay)
+                        .easing(TWEEN.Easing.Bounce.Out)
+                        .start();
+
+                    new TWEEN.Tween(mesh.material)
+                        .to({opacity: 1}, 2500) // Wydłużony fade
+                        .delay(topDelay)
+                        .start();
+                }
+            });
+
+            // 4. KAMERA
+            new TWEEN.Tween(camera.position)
+                .to({x: 20, y: 15, z: 25}, 5000)
+                .easing(TWEEN.Easing.Cubic.InOut)
+                .start();
+
+            new TWEEN.Tween(grid.material).to({opacity: 0.3}, 2000).delay(1500).start();
+            
+            // UI pojawia się później, bo animacja trwa dłużej
+            setTimeout(() => {
+                isAnimating = false;
+                controls.autoRotate = true;
+                ["ui-panel", "info-panel", "ui-nav", "ui-ar"].forEach(id => {
+                    document.getElementById(id).classList.add('visible');
+                });
+            }, 5000);
+        }
+
         function toggleXRay(active) {
+            if (!currentModel) return;
+
+            const targetHemiIntensity = active ? 1.5 : 0.6;
+            const targetMainIntensity = active ? 4.5 : 2.8;
+
+            new TWEEN.Tween(hemiLight).to({ intensity: targetHemiIntensity }, 600).start();
+            new TWEEN.Tween(mainLight).to({ intensity: targetMainIntensity }, 600).start();
+
             currentModel.traverse(n => {
-                if (n.isMesh) {
-                    const isConcrete = n.name.toLowerCase().includes("beton") || n.scale.x > 0.5;
-                    if (isConcrete) {
-                        const targetColor = active ? new THREE.Color(0x00ffff) : n.userData.originalColor;
-                        new TWEEN.Tween(n.material.color).to({ r: targetColor.r, g: targetColor.g, b: targetColor.b }, 600).start();
-                        new TWEEN.Tween(n.material).to({ opacity: active ? 0.2 : 1.0 }, 600).start();
-                        n.castShadow = !active;
-                    }
+                if (n.isMesh && n.userData.isConcrete) {
+                    const targetOpacity = active ? 0.2 : 1.0;
+                    const targetRoughness = active ? 0.1 : 0.7;
+                    n.material.depthWrite = !active;
+                    n.material.transparent = true;
+                    n.material.needsUpdate = true;
+                    new TWEEN.Tween(n.material)
+                        .to({ opacity: targetOpacity, roughness: targetRoughness }, 600)
+                        .easing(TWEEN.Easing.Quadratic.Out)
+                        .start();
                 }
             });
         }
 
         function updateClipping(val) { clipPlane.constant = parseFloat(val); }
-
-        function runIntro() {
-            currentModel.traverse(n => {
-                if(n.isMesh) {
-                    new TWEEN.Tween(n.position).to({y: n.userData.origPos.y}, 2500).easing(TWEEN.Easing.Cubic.Out).start();
-                    new TWEEN.Tween(n.material).to({opacity: 1}, 1500).start();
-                }
-            });
-            
-            new TWEEN.Tween(grid.material).to({opacity: 0.3}, 2000).start();
-            new TWEEN.Tween(camera.position).to({x: 15, y: 12, z: 22}, 3500).easing(TWEEN.Easing.Cubic.InOut).start();
-            
-            setTimeout(() => {
-                isAnimating = false;
-                controls.autoRotate = true;
-                ["ui-panel", "info-panel", "ui-nav", "ui-ar"].forEach(id => document.getElementById(id).classList.add('visible'));
-            }, 3800);
-        }
-
         function restartExperience() { location.reload(); }
 
         function setVariant(h, btn) {
             if(isAnimating) return;
-            new TWEEN.Tween(currentModel.scale).to({y: h/24}, 800).easing(TWEEN.Easing.Back.Out).start();
+            new TWEEN.Tween(currentModel.scale).to({y: (h/20) * 2}, 800).easing(TWEEN.Easing.Back.Out).start();
             document.querySelectorAll('.variant-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
         }
@@ -348,6 +474,8 @@
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
+
+        init();
     </script>
 </body>
 </html>
